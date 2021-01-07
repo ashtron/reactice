@@ -24,11 +24,8 @@ class Calculator extends React.Component {
     handleDisplayChange = (event) => {
         event.preventDefault()
 
-        this.setState(prevState => {
-            return {
-                ...prevState,
-                displayValue: event.target.value
-            }
+        this.setState({
+            displayValue: event.target.value
         })
     }
 
@@ -39,10 +36,11 @@ class Calculator extends React.Component {
 
         if (keySymbol === "=") {
             this.setState(prevState => {
+                // Evaluate the expression by creating and immediately calling a function to avoid
+                // using eval().
                 const result = Function(`return ${prevState.expression} ${prevState.displayValue}`)()
 
                 return {
-                    ...prevState,
                     expression: "",
                     displayValue: result
                 }
@@ -55,7 +53,6 @@ class Calculator extends React.Component {
         } else {
             this.setState(prevState => {
                 return {
-                    ...prevState,
                     expression: `${prevState.expression} ${this.state.displayValue} ${keySymbol}`
                 }
             })
@@ -79,6 +76,3 @@ class Calculator extends React.Component {
 }
 
 export default Calculator
-
-// displayValue is updated whenever the display input changes or a button is pressed.
-// Whenever you press a button, value becomes value + displayValue.
